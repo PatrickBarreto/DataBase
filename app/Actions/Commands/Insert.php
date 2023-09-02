@@ -5,9 +5,11 @@ namespace App\Actions\Commands;
 use App\Actions\ActionsDML;
 
 class Insert extends ActionsDML{
+     
      public bool $ignore = false;
      public string $fields;
      public array $values; 
+
 
      /**
      * Set the ignore option, by default it is false
@@ -38,12 +40,9 @@ class Insert extends ActionsDML{
      * @return Insert
      */
      public function setValues(array $values) {
-          $this->fields = implode(",",$values);
+          $this->values = $values;
           return $this;
      }
-
-   
-
 
 
 }
