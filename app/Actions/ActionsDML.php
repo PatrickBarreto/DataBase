@@ -18,7 +18,7 @@ abstract class ActionsDML implements QueryInterface{
     protected string $table = '';
 
     public function setTable(string $tableName) {
-        $this->table = $tableName;
+        $this->table = ' '.$tableName.' ';
         return $this;
     }
 
@@ -31,7 +31,7 @@ abstract class ActionsDML implements QueryInterface{
     public function setWhereIn(string $column, array $options) {
         $this->where = '';
         $options = implode(",",$options);
-        $this->whereIn = "WHERE {$column} IN ({$options})";
+        $this->whereIn = " WHERE {$column} IN ({$options})";
         return $this;
     }
 
