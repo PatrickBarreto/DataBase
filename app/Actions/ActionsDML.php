@@ -2,18 +2,20 @@
 
 namespace App\Actions;
 
-use App\Actions\Commands\Insert;
-use App\Actions\Commands\Select;
+use App\Actions\QueryInterface;
+use App\Exceptions\ExceptionHandler;
 
 /**
  * Abstract Class with commom ressources fo the heiress class.
  */
-abstract class ActionsDML{
+abstract class ActionsDML implements QueryInterface{
+
+    use QueryTrait;
 
     public string $type = '';
-    public string $table = '';
     public string $where = '';
     public string $whereIn = '';
+    protected string $table = '';
 
     public function setTable(string $tableName) {
         $this->table = $tableName;
@@ -31,6 +33,13 @@ abstract class ActionsDML{
         $options = implode(",",$options);
         $this->whereIn = "WHERE {$column} IN ({$options})";
         return $this;
+    }
+
+    public function getTableName(){
+        if(empty($this->table)) {
+            new ExceptionHandler("The table is not configured", 400, $this);
+        }
+        return $this->table;
     }
 
 }

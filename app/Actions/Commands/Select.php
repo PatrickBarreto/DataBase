@@ -87,20 +87,16 @@ class Select extends ActionsDML {
      * @return string
      */
     public function buildQuery(bool $subquery = false) {
-        $distinct = ($this->distinct) ? 'DISTINCT' : null;
-        $fields   = $this->fields;
-        $table    = $this->table;
-        $where    = $this->where;
-        $whereIn  = $this->whereIn;
-        $limit    = $this->limit;
-        $order    = $this->order;
-        $group    = $this->group;
-        $having   = $this->having;
+        $distinct = ($this->distinct) ? " DISTINCT " : null;
+        $table    = $this->getTableName();
 
+        $query = "SELECT{$distinct}{$this->fields}FROM{$table}{$this->where}{$this->whereIn}{$this->limit}{$this->order}{$this->group}{$this->having}";
+        
         if($subquery){
-            return "(SELECT {$distinct} {$fields} FROM {$table} {$where} {$whereIn} {$limit} {$order} {$group} {$having})";
+            $query = "({$query})";
         }
-        return "SELECT {$distinct} {$fields} FROM {$table} {$where} {$whereIn} {$limit} {$order} {$group} {$having}";
+
+        return $query;
     }
 
 }

@@ -55,22 +55,6 @@ abstract class DataBaseHandler {
             new ExceptionHandler($e->getMessage(), 400);
         }
     }
-
-    /**
-     * Método responsável por aplicar os padrões que o SQL querer para cada tipo de dado dentro da query.
-     *
-     * @param string $data
-     * @return void
-     */
-    protected function prepareDataForQuery(string $data) {
-        
-        $data = filter_var($data, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-        if(empty($data)) return 0;
-        if(is_numeric($data)) return $data;
-        if(is_string($data)) return "'".$data."'";
-    }
-
    
     /**
      * Configura a conexão PDO para gerar excessões de falhas de acordo com o valor passado na variável de ambiente DB_DEBUG.
