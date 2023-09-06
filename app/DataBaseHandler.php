@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Handlers\DataBaseHandler;
+namespace App;
 
-use App\Handlers\DataBaseHandler\HandlerRessources\ActionDataBase;
 use PDO;
 use PDOException;
 use PDOStatement;
-use App\Handlers\ExceptionHandler;
+use App\Exceptions\ExceptionHandler;
 
 
 /**
@@ -16,18 +15,15 @@ use App\Handlers\ExceptionHandler;
 abstract class DataBaseHandler {
 
     protected PDO $pdo;
-    protected string $table;
 
     /**
      * Método responsável por construir a instância da classe, iniciando o PDO
      *
-     * @param string|null $table
      */
-    public function __construct(string $table = null){        
+    public function __construct(){        
         try{
             $this->pdo = new PDO(getenv('DB_CONNECTION').':host='.getenv('DB_HOST').':'.getenv('DB_PORT').';dbname='.getenv('DB_DATABASE'),
-                                    getenv('DB_USERNAME'),getenv('DB_PASSWORD'),$this->setOptionsPDO());
-            $this->table = $table ?? '';
+            getenv('DB_USERNAME'),getenv('DB_PASSWORD'),$this->setOptionsPDO());
         }catch(PDOException $e){
            echo $e->getMessage();
            exit;
@@ -38,19 +34,19 @@ abstract class DataBaseHandler {
      * Método responsável por tentar inserir uma única unidade de dados, uma linha de registro. O método dispara excessão do sql se houver erro.
      *
      * @param string $query
-     * @return PDOStatement
+     * @return array
      */
     protected function tryQuery(string $query){
         try{
             $this->pdo->beginTransaction();
             $statement = $this->pdo->query($query);
             $this->pdo->commit();
-            return $statement;
+            return ['statement'=>$statement, 'object' => $this];
 
         }catch(PDOException $e){
             $this->pdo->rollBack();
             if(getenv('DB_DEBUG_BAD_QUERY') === "true"){
-                new ExceptionHandler($e->getMessage(), 400, ['query' => $query]);
+                new ExceptionHandler($e->getMessage(), 400, (object)['query' => $query]);
             }
             new ExceptionHandler($e->getMessage(), 400);
         }
@@ -62,7 +58,7 @@ abstract class DataBaseHandler {
      * @return array
      */
     private function setOptionsPDO(){
-        if(env('DB_DEBUG')) {
+        if(getenv('DB_DEBUG')) {
             return [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION];
         }
         return [PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT];

@@ -42,7 +42,7 @@ class Insert extends ActionsDML {
      */
      public function setValues(array $values) {
           $this->insertSelect = '';
-          $this->values = " VALUES {$this->convertArrayToQueryPattern($values, 'insert')}";
+          $this->values = "VALUES {$this->convertArrayToQueryPattern($values, 'insert')}";
           return $this;
      }
 
@@ -62,7 +62,9 @@ class Insert extends ActionsDML {
      public function buildQuery() {
           $ignore = $this->ignore ? " IGNORE " : null;
           $table = $this->getTableName();
-          return "INSERT {$ignore} INTO {$table}({$this->fields}){$this->values}{$this->insertSelect}";
+          $query = "INSERT {$ignore} INTO {$table}({$this->fields}) {$this->values} {$this->insertSelect}";
+          $this->query = $query;
+          return $this;
      }
 
 

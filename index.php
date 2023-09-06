@@ -7,40 +7,32 @@ use App\Actions\Commands\Insert;
 use App\Actions\Commands\Update;
 use App\Actions\Commands\Delete;
 
-use App\Handlers\DataBaseHandler\TableHandler;
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
+$dotenv->load();
 
 $select = (new Select)
-        ->setTable('teste_tabela')
-        ->setDistinct(true)
-        ->setFields(['teste, teste2'])
-        ->setWhere('teste = 1')
-        ->buildQuery(true);
-
-
+        ->setTable('teeste')
+        ->setDistinct(false)
+        ->setFields(['nome'])
+        ->setWhere('nome = "Pedro"')
+        ->buildQuery(true)
+        ->runQuery();
         
 $insert = (new Insert)
-        ->setTable('teste_tabela')
-        ->setFields(['teste', 'teste2'])
-        ->setValues(['teste',2,3])
-        ->buildQuery();
-
-
+        ->setTable('teste')
+        ->setFields(['nome'])
+        ->setInsertSelect($select['object']->query)
+        ->buildQuery()
+        ->runQuery();
 
 $update = (new Update)
-        ->setTable('teste_tabela')
-        ->setSet([['teste' => 3], ['teste' => 'oi']])
-        ->setWhere($select)
+        ->setTable('teste')
+        ->setSet(['nome' => 'joão'])
+        ->setWhere($select['object']->query)
         ->buildQuery();
+
 
 $delete = (new Delete)
         ->setTable('teste_tabela')
         ->setWhere('teste=1')
         ->buildQuery();
-
-
-
-
-// INICIO DEBUG
-    echo ((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) / 1000).' ms';
-    echo '<pre>'; var_dump('',$select, $insert, $update, $delete); echo '</pre>'; die;
-// FIM DEBUG

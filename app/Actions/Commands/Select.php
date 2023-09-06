@@ -31,7 +31,7 @@ class Select extends ActionsDML {
      * @return Select
      */
     public function setFields(array $fields) {
-        $this->fields = implode(",",$fields);
+        $this->fields = implode(",",$fields).' ';
         return $this;
     }
 
@@ -43,7 +43,7 @@ class Select extends ActionsDML {
      * @return Select
      */
     public function setLimit(int $limit, int $offset = 0) {
-        $this->limit = " LIMIT "."{$offset},{$limit}";
+        $this->limit = "LIMIT "."{$offset},{$limit}";
         return $this;
     }
 
@@ -55,7 +55,7 @@ class Select extends ActionsDML {
      * @return Select
      */
     public function setOrder(string $fields, string $order = "ASC") {
-        $this->order = " ORDER BY "."{$fields} {$order}";
+        $this->order = "ORDER BY "."{$fields} {$order}";
         return $this;
     }
 
@@ -66,7 +66,7 @@ class Select extends ActionsDML {
      * @return Select
      */
     public function setGroupBy(array $fields) {
-        $this->group = " GROUP BY ".implode(",",$fields);
+        $this->group = "GROUP BY ".implode(",",$fields);
         return $this;
     }
 
@@ -77,26 +77,26 @@ class Select extends ActionsDML {
      * @return Select
      */
     public function setHaving(string $condition) {
-        $this->having = " HAVING ".$condition;
+        $this->having = "HAVING ".$condition;
         return $this;
     }
 
     /**
      * Build the query for a selet query
      *
-     * @return string
+     * @return Select
      */
     public function buildQuery(bool $subquery = false) {
-        $distinct = ($this->distinct) ? " DISTINCT " : null;
+        $distinct = ($this->distinct) ? "DISTINCT " : null;
         $table    = $this->getTableName();
 
-        $query = "SELECT{$distinct}{$this->fields}FROM{$table}{$this->where}{$this->whereIn}{$this->limit}{$this->order}{$this->group}{$this->having}";
+        $query = "SELECT {$distinct} {$this->fields} FROM {$table} {$this->where} {$this->whereIn} {$this->limit} {$this->order} {$this->group} {$this->having}";
         
         if($subquery){
             $query = "({$query})";
         }
-
-        return $query;
+        $this->query = $query;
+        return $this;
     }
 
 }
