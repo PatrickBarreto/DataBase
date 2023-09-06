@@ -4,10 +4,13 @@ namespace App\Actions\Commands;
 
 use App\Actions\ActionsDML;
 
-class Insert extends ActionsDML{
+class Insert extends ActionsDML {
+     
      public bool $ignore = false;
      public string $fields;
-     public array $values; 
+     public string $values; 
+     public string $insertSelect; 
+
 
      /**
      * Set the ignore option, by default it is false
@@ -38,12 +41,31 @@ class Insert extends ActionsDML{
      * @return Insert
      */
      public function setValues(array $values) {
-          $this->fields = implode(",",$values);
+          $this->insertSelect = '';
+          $this->values = "VALUES {$this->convertArrayToQueryPattern($values, 'insert')}";
           return $this;
      }
 
-   
+     /**
+     * Set the values with a SELECT query
+     *
+     * @param string $query
+     * @return Insert
+     */
+     public function setInsertSelect(string $query) {
+          $this->values = '';
+          $this->insertSelect = $query;
+          return $this;
+     }
 
+
+     public function buildQuery() {
+          $ignore = $this->ignore ? " IGNORE " : null;
+          $table = $this->getTableName();
+          $query = "INSERT {$ignore} INTO {$table}({$this->fields}) {$this->values} {$this->insertSelect}";
+          $this->query = $query;
+          return $this;
+     }
 
 
 }

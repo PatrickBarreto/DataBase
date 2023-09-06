@@ -1,29 +1,19 @@
-/**
-     * Método responsável por receber um array associativo onde a chave é a opção e o valor, o valor. Cabe a quem chama passar corretamente o que cabe a ação.
-     * 
-     * AÇÕES ESPECFICIAS PARA CADA GERAL
-     *  insert: [
-     *          'ignore' => true | false,
-     *          'fields' => '',
-     *          'values' => [['coluna'=>'valor'],[...]]
-     *          ],
-     * 
-     *  select: [
-     *           'distinct' => false | true,
-     *           'fields' => "*",
-     *           'where' => '',
-     *           'limit' => '',
-     *           'order' => '',
-     *           'group' => '',
-     *           'having' => ''
-     *          ],
-     * 
-     *  update: [
-     *           'set' => [['coluna'=>'valor'],[...]],
-     *           'where' => ''
-     *          ],
-     *  
-     *  delete: [
-     *           'where' => ''
-     *          ]
-     *
+<?php
+
+namespace App\Actions\Commands;
+
+use App\Actions\ActionsDML;
+use App\Exceptions\ExceptionHandler;
+
+class Delete extends ActionsDML{
+
+     public function buildQuery(){
+          $table = $this->getTableName();
+          if($this->where || $this->whereIn){
+               $query = "DELETE FROM {$table} {$this->where} {$this->whereIn}";
+               $this->query = $query;
+               return $query;
+          }
+          new ExceptionHandler("Any Where Condiction needs to be seted to run a Delete command", 400, $this);
+     }
+}
