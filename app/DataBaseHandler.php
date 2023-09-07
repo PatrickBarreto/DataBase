@@ -7,6 +7,9 @@ use PDOException;
 use PDOStatement;
 use App\Exceptions\ExceptionHandler;
 
+/**
+ * Abstract flass with ressources that anyone data base action will need, this class care data base layer methods.
+ */
 abstract class DataBaseHandler {
 
     private PDO $pdo;
@@ -50,7 +53,7 @@ abstract class DataBaseHandler {
             new ExceptionHandler($e->getMessage(), 400);
         }
     }
-   
+
     /**
      * This method configures the PDO connection to generate fault exceptions according to the value passed in the DB_DEBUG environment variable.
      *

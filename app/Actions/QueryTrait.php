@@ -2,6 +2,10 @@
 
 namespace App\Actions;
 
+/**
+ * Trait with functions that can be useful for more than one class, to solte pontual problems, 
+ * but not necessarilly are direct part of the conection and manipulate database flow.
+ */
 trait QueryTrait{
     
     /**

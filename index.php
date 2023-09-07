@@ -12,30 +12,28 @@ $dotenv->load();
 
 $delete = (new Delete)
         ->setTable('teste')
-        ->setWhereIn('nome',['pedro','maria','josé'])
-        ->buildQuery()
+        ->setWhereIn('nome',['pedro','maria','josé','joão'])
         ->runQuery();
-
 
 $insert = (new Insert)
         ->setTable('teste')
         ->setFields(['nome'])
         ->setValues([['pedro'], ['maria'], ['josé']])
-        ->buildQuery()
+        ->runQuery();
+
+$update = (new Update)
+        ->setTable('teste')
+        ->setSet(['nome' => 'Alberto'])
+        ->setWhere("nome = 'josé'")
         ->runQuery();
         
 $select = (new Select)
         ->setTable('teste')
         ->setDistinct(false)
-        ->setFields(['nome'])
-        ->fetchAssoc(true);
+        ->setOrder('nome', 'ASC')
+        ->fetchObject(true, stdClass::class);
 
 // INICIO DEBUG
-    echo ((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) / 1000).' ms';
-    echo '<pre>'; var_dump($select); echo '</pre>'; die;
+        echo ((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) / 1000).' ms';
+        echo '<pre>'; var_dump($select); echo '</pre>'; die;
 // FIM DEBUG
-
-// $update = (new Update)
-//         ->setTable('teste')
-//         ->setSet(['nome' => 'joão'])
-//         ->setWhere("nome = 'pedro'");

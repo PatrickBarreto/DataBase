@@ -2,17 +2,16 @@
 
 namespace App\Actions;
 
-use App\Actions\Commands\Select;
-use App\Actions\QueryInterface;
-use App\Exceptions\ExceptionHandler;
-use App\DataBaseHandler;
-use PDOStatement;
 use stdClass;
+use PDOStatement;
+use App\DataBaseHandler;
+use App\Actions\DMLInterface;
+use App\Exceptions\ExceptionHandler;
 
 /**
- * Abstract Class with commom ressources fo the heiress class.
+ * Abstract Class with commom ressources for the heiress class.
  */
-abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
+abstract class ActionsDML extends DataBaseHandler implements DMLInterface{
 
     use QueryTrait;
 
@@ -21,9 +20,14 @@ abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
     public string $whereIn = '';
     public string $query = '';
     protected string $table = '';
+    
     protected PDOStatement $statement;
 
-
+    /**
+     * This method is responsable to check if a table name was seted in the instance of class that heirded this class
+     *
+     * @return string
+     */
     public function getTableName(){
         if(empty($this->table)) {
             new ExceptionHandler("The table is not configured", 400, $this);
@@ -31,17 +35,36 @@ abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
         return $this->table;
     }
 
+    /**
+     * This method is responsable to set a table in the instance of class that heirded this class
+     *
+     * @param string $tableName
+     * @return $this
+     */
     public function setTable(string $tableName) {
         $this->table = ' '.$tableName.' ';
         return $this;
     }
 
+    /**
+     * This method is responsable to set the Where Simple Conditction for the query of instance class that heirded this class.
+     *
+     * @param string $condition
+     * @return $this
+     */
     public function setWhere(string $condition) {
         $this->whereIn = '';
         $this->where = "WHERE {$condition}";
         return $this;
     }
 
+    /**
+     * This method is responsable to set the Where In Conditction for the query of instance class that heirded this class.
+     *
+     * @param string $column
+     * @param array $options
+     * @return $this;
+     */
     public function setWhereIn(string $column, array $options) {
         $options = $this->convertArrayToQueryPattern($options, 'whereIn');
         $this->where = '';
@@ -50,7 +73,7 @@ abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
     }
 
     /**
-     * this method is responsable to run a query without a fetch result. 
+     * this method is responsable to run the query of the class without a fetch result. 
      *
      * @return $this
      */
@@ -91,7 +114,7 @@ abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
     }
 
     /**
-     * this method is responsable to check and create a query if necessary.
+     * this method is responsable to check existense and create a query if necessary.
      *
      * @return void
      */
@@ -100,7 +123,4 @@ abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
             $this->buildQuery();
         }
     }
-
-
-
 }
