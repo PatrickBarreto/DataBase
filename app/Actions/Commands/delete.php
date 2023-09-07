@@ -12,7 +12,7 @@ class Delete extends ActionsDML{
           if($this->where || $this->whereIn){
                $query = "DELETE FROM {$table} {$this->where} {$this->whereIn}";
                $this->query = $query;
-               return $query;
+               return $this;
           }
           new ExceptionHandler("Any Where Condiction needs to be seted to run a Delete command", 400, $this);
      }

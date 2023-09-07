@@ -7,20 +7,15 @@ use PDOException;
 use PDOStatement;
 use App\Exceptions\ExceptionHandler;
 
-
-/**
- * Classe de recursos para manipular as operações de banco de dados de necessidade do app, como CRUD simples e abstração de PDO, bindValue e outros recursos nativos do PDO para conexão e manipulação
- * da base de dados
- */
 abstract class DataBaseHandler {
 
-    protected PDO $pdo;
+    private PDO $pdo;
 
     /**
-     * Método responsável por construir a instância da classe, iniciando o PDO
+     * This method is responsible for building the PDO instance for manipulation with the database.
      *
      */
-    public function __construct(){        
+    public function makeConnection(){        
         try{
             $this->pdo = new PDO(getenv('DB_CONNECTION').':host='.getenv('DB_HOST').':'.getenv('DB_PORT').';dbname='.getenv('DB_DATABASE'),
             getenv('DB_USERNAME'),getenv('DB_PASSWORD'),$this->setOptionsPDO());
@@ -30,18 +25,22 @@ abstract class DataBaseHandler {
         }
     }
 
+    public function destroyConnection(){
+        $this->pdo = '';
+    }
+
     /**
-     * Método responsável por tentar inserir uma única unidade de dados, uma linha de registro. O método dispara excessão do sql se houver erro.
+     * Method responsible for trying to insert a single unit of data, a record line. The method triggers the sql exception if there is an error.
      *
      * @param string $query
-     * @return array
+     * @return PDOStatement
      */
     protected function tryQuery(string $query){
         try{
             $this->pdo->beginTransaction();
             $statement = $this->pdo->query($query);
             $this->pdo->commit();
-            return ['statement'=>$statement, 'object' => $this];
+            return $statement;
 
         }catch(PDOException $e){
             $this->pdo->rollBack();
@@ -53,7 +52,7 @@ abstract class DataBaseHandler {
     }
    
     /**
-     * Configura a conexão PDO para gerar excessões de falhas de acordo com o valor passado na variável de ambiente DB_DEBUG.
+     * This method configures the PDO connection to generate fault exceptions according to the value passed in the DB_DEBUG environment variable.
      *
      * @return array
      */

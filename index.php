@@ -10,29 +10,32 @@ use App\Actions\Commands\Delete;
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
-$select = (new Select)
-        ->setTable('teeste')
-        ->setDistinct(false)
-        ->setFields(['nome'])
-        ->setWhere('nome = "Pedro"')
-        ->buildQuery(true)
-        ->runQuery();
-        
-$insert = (new Insert)
+$delete = (new Delete)
         ->setTable('teste')
-        ->setFields(['nome'])
-        ->setInsertSelect($select['object']->query)
+        ->setWhereIn('nome',['pedro','maria','josé'])
         ->buildQuery()
         ->runQuery();
 
-$update = (new Update)
+
+$insert = (new Insert)
         ->setTable('teste')
-        ->setSet(['nome' => 'joão'])
-        ->setWhere($select['object']->query)
-        ->buildQuery();
+        ->setFields(['nome'])
+        ->setValues([['pedro'], ['maria'], ['josé']])
+        ->buildQuery()
+        ->runQuery();
+        
+$select = (new Select)
+        ->setTable('teste')
+        ->setDistinct(false)
+        ->setFields(['nome'])
+        ->fetchAssoc(true);
 
+// INICIO DEBUG
+    echo ((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) / 1000).' ms';
+    echo '<pre>'; var_dump($select); echo '</pre>'; die;
+// FIM DEBUG
 
-$delete = (new Delete)
-        ->setTable('teste_tabela')
-        ->setWhere('teste=1')
-        ->buildQuery();
+// $update = (new Update)
+//         ->setTable('teste')
+//         ->setSet(['nome' => 'joão'])
+//         ->setWhere("nome = 'pedro'");
