@@ -27,7 +27,7 @@ abstract class DataBaseHandler {
            exit;
         }
     }
-
+ 
     public function destroyConnection(){
         $this->pdo = '';
     }
