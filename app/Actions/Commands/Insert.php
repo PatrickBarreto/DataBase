@@ -4,6 +4,9 @@ namespace App\Actions\Commands;
 
 use App\Actions\ActionsDML;
 
+/**
+ * Class responsable to be a Insert query constructor
+ */
 class Insert extends ActionsDML {
      
      public bool $ignore = false;
@@ -59,6 +62,11 @@ class Insert extends ActionsDML {
      }
 
 
+     /**
+      * Build the query sentense for a Insert query
+      *
+      * @return Insert
+      */
      public function buildQuery() {
           $ignore = $this->ignore ? " IGNORE " : null;
           $table = $this->getTableName();

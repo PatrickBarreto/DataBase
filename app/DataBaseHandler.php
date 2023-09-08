@@ -8,7 +8,7 @@ use PDOStatement;
 use App\Exceptions\ExceptionHandler;
 
 /**
- * Abstract flass with ressources that anyone data base action will need, this class care data base layer methods.
+ * Abstract class with ressources that anyone data base action will need, this class care data base layer methods.
  */
 abstract class DataBaseHandler {
 
