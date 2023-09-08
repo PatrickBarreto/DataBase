@@ -4,6 +4,9 @@ namespace App\Actions\Commands;
 
 use App\Actions\ActionsDML;
 
+/**
+ * Class responsable to be a Select query constructor
+ */
 class Select extends ActionsDML {
   
     public bool $distinct = false;  
@@ -82,7 +85,7 @@ class Select extends ActionsDML {
     }
 
     /**
-     * Build the query for a selet query
+     * Build the query sentense for a Select query
      *
      * @return Select
      */

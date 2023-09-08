@@ -10,29 +10,30 @@ use App\Actions\Commands\Delete;
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
-$select = (new Select)
-        ->setTable('teeste')
-        ->setDistinct(false)
-        ->setFields(['nome'])
-        ->setWhere('nome = "Pedro"')
-        ->buildQuery(true)
+$delete = (new Delete)
+        ->setTable('teste')
+        ->setWhereIn('nome',['pedro','maria','josé','joão'])
         ->runQuery();
-        
+
 $insert = (new Insert)
         ->setTable('teste')
         ->setFields(['nome'])
-        ->setInsertSelect($select['object']->query)
-        ->buildQuery()
+        ->setValues([['pedro'], ['maria'], ['josé']])
         ->runQuery();
 
 $update = (new Update)
         ->setTable('teste')
-        ->setSet(['nome' => 'joão'])
-        ->setWhere($select['object']->query)
-        ->buildQuery();
+        ->setSet(['nome' => 'Alberto'])
+        ->setWhere("nome = 'josé'")
+        ->runQuery();
+        
+$select = (new Select)
+        ->setTable('teste')
+        ->setDistinct(false)
+        ->setOrder('nome', 'ASC')
+        ->fetchObject(true, stdClass::class);
 
-
-$delete = (new Delete)
-        ->setTable('teste_tabela')
-        ->setWhere('teste=1')
-        ->buildQuery();
+// INICIO DEBUG
+        echo ((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) / 1000).' ms';
+        echo '<pre>'; var_dump($select); echo '</pre>'; die;
+// FIM DEBUG

@@ -2,15 +2,16 @@
 
 namespace App\Actions;
 
-use App\Actions\QueryInterface;
-use App\Exceptions\ExceptionHandler;
-use App\DataBaseHandler;
+use stdClass;
 use PDOStatement;
+use App\DataBaseHandler;
+use App\Actions\DMLInterface;
+use App\Exceptions\ExceptionHandler;
 
 /**
- * Abstract Class with commom ressources fo the heiress class.
+ * Abstract Class with commom ressources for the heiress class.
  */
-abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
+abstract class ActionsDML extends DataBaseHandler implements DMLInterface{
 
     use QueryTrait;
 
@@ -18,27 +19,15 @@ abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
     public string $where = '';
     public string $whereIn = '';
     public string $query = '';
-    public PDOStatement $statement;
     protected string $table = '';
+    
+    protected PDOStatement $statement;
 
-    public function setTable(string $tableName) {
-        $this->table = ' '.$tableName.' ';
-        return $this;
-    }
-
-    public function setWhere(string $condition) {
-        $this->whereIn = '';
-        $this->where = "WHERE {$condition}";
-        return $this;
-    }
-
-    public function setWhereIn(string $column, array $options) {
-        $this->where = '';
-        $options = implode(",",$options);
-        $this->whereIn = "WHERE {$column} IN ({$options})";
-        return $this;
-    }
-
+    /**
+     * This method is responsable to check if a table name was seted in the instance of class that heirded this class
+     *
+     * @return string
+     */
     public function getTableName(){
         if(empty($this->table)) {
             new ExceptionHandler("The table is not configured", 400, $this);
@@ -46,8 +35,92 @@ abstract class ActionsDML extends DataBaseHandler implements QueryInterface{
         return $this->table;
     }
 
-    public function runQuery(){
-        return $this->tryQuery($this->query);
+    /**
+     * This method is responsable to set a table in the instance of class that heirded this class
+     *
+     * @param string $tableName
+     * @return $this
+     */
+    public function setTable(string $tableName) {
+        $this->table = ' '.$tableName.' ';
+        return $this;
     }
 
+    /**
+     * This method is responsable to set the Where Simple Conditction for the query of instance class that heirded this class.
+     *
+     * @param string $condition
+     * @return $this
+     */
+    public function setWhere(string $condition) {
+        $this->whereIn = '';
+        $this->where = "WHERE {$condition}";
+        return $this;
+    }
+
+    /**
+     * This method is responsable to set the Where In Conditction for the query of instance class that heirded this class.
+     *
+     * @param string $column
+     * @param array $options
+     * @return $this;
+     */
+    public function setWhereIn(string $column, array $options) {
+        $options = $this->convertArrayToQueryPattern($options, 'whereIn');
+        $this->where = '';
+        $this->whereIn = "WHERE {$column} IN ({$options})";
+        return $this;
+    }
+
+    /**
+     * this method is responsable to run the query of the class without a fetch result. 
+     *
+     * @return $this
+     */
+    public function runQuery(){
+        $this->makeConnection();
+        $this->createQueryIfNecessary();
+        $this->statement = $this->tryQuery($this->query);
+        return $this;
+    }
+
+    /**
+     * This method id responsable to return data with an associative array
+     *
+     * @param bool $returnAll
+     * @return array
+     */
+    public function fetchAssoc(bool $returnAll = false){
+        $this->runQuery();
+        if($returnAll){
+            return $this->statement->fetchAll(\PDO::FETCH_ASSOC);
+        }
+        return $this->statement->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * This method is responsable to return data with an object of a class type. By default it is stdClass
+     *
+     * @param bool $returnAll
+     * @param string $class
+     * @return array|object
+     */
+    public function fetchObject(bool $returnAll = false, string $class = stdClass::class){
+        $this->runQuery();
+        if($returnAll){
+            return $this->statement->fetchAll(\PDO::FETCH_CLASS, $class);
+        }
+        return $this->statement->fetchObject($class);
+    }
+
+    /**
+     * this method is responsable to check existense and create a query if necessary.
+     *
+     * @return void
+     */
+    private function createQueryIfNecessary() {
+        if(empty($this->query)){
+            $this->buildQuery();
+        }
+    }
 }

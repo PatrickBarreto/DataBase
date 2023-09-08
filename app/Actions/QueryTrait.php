@@ -2,6 +2,10 @@
 
 namespace App\Actions;
 
+/**
+ * Trait with functions that can be useful for more than one class, to solte pontual problems, 
+ * but not necessarilly are direct part of the conection and manipulate database flow.
+ */
 trait QueryTrait{
     
     /**
@@ -11,7 +15,7 @@ trait QueryTrait{
      * @return void
      */
     protected function prepareDataForQuery(string $data) {
-        $data = filter_var($data, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $data = filter_var($data, FILTER_SANITIZE_SPECIAL_CHARS);
 
         if(empty($data)) return 0;
         if(is_numeric($data)) return $data;
@@ -41,6 +45,7 @@ trait QueryTrait{
            if($key == array_key_last($values)){
                 if($type == 'insert') $formatValues[] = '('.implode(', ', $formatData).')';
                 if($type == 'update') $formatValues[] =  $key.' = '.implode(', ', $formatData);
+                if($type == 'whereIn') $formatValues[] = implode(', ', $formatData);
            }
        }
 
