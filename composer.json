@@ -2,7 +2,7 @@
     "name": "patrick-barreto/data-base",
     "description": "Basic ORM to make a CRUD at model class very easy",
     "type": "library",
-    "license": "GPL-3.0=or-later",
+    "license": "GPL-3.0-or-later",
     "author": [
         {
             "name": "Patrick Barreto"
