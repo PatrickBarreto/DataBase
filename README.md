@@ -6,11 +6,12 @@ The next step of this code is:
 - Implement the join ressource
 - Implement the essentials DDL Commands (CREATE, DROP, TRUNCATE, ALTER)
 
-The object with this project is have a simple data base handler, with the essentials commands to help developers with a pontual features. 
-The projetc will be openSource and will be published at https://packagist.org/
-
 If you have an idea or pull request to make, do it. Ideas are very welcome.
 
+# How to Install
+```sh
+composer require patrick-barreto/data-base
+```
 
 # How to Use
 ```php
