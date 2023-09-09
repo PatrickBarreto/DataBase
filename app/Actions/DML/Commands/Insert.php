@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\Commands;
+namespace DataBase\Actions\DML\Commands;
 
-use App\Actions\ActionsDML;
+use DataBase\Actions\DML\DML;
 
 /**
  * Class responsable to be a Insert query constructor
  */
-class Insert extends ActionsDML {
+class Insert extends DML {
      
      public bool $ignore = false;
      public string $fields;

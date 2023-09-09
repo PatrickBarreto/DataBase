@@ -1,13 +1,13 @@
 <?php 
 
-namespace App\Actions\Commands;
+namespace DataBase\Actions\DML\Commands;
 
-use App\Actions\ActionsDML;
+use DataBase\Actions\DML\DML;
 
 /**
  * Class responsable to be a Update query constructor
  */
-class Update extends ActionsDML{
+class Update extends DML{
      
      public string $set = '';
 

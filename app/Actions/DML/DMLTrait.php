@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Actions;
+namespace DataBase\Actions\DML;
 
 /**
  * Trait with functions that can be useful for more than one class, to solte pontual problems, 
  * but not necessarilly are direct part of the conection and manipulate database flow.
  */
-trait QueryTrait{
+trait DMLTrait{
     
     /**
      * Prepare data by the format that a query need
