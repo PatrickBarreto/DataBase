@@ -6,34 +6,21 @@ use App\Actions\Commands\Select;
 use App\Actions\Commands\Insert;
 use App\Actions\Commands\Update;
 use App\Actions\Commands\Delete;
+use App\Actions\Commands\Query;
 
 $dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
 $dotenv->load();
 
-$delete = (new Delete)
-        ->setTable('teste')
-        ->setWhereIn('nome',['pedro','maria','josé','joão'])
-        ->runQuery();
-
-$insert = (new Insert)
-        ->setTable('teste')
-        ->setFields(['nome'])
-        ->setValues([['pedro'], ['maria'], ['josé']])
-        ->runQuery();
-
-$update = (new Update)
-        ->setTable('teste')
-        ->setSet(['nome' => 'Alberto'])
-        ->setWhere("nome = 'josé'")
-        ->runQuery();
-        
 $select = (new Select)
         ->setTable('teste')
         ->setDistinct(false)
         ->setOrder('nome', 'ASC')
-        ->fetchObject(true, stdClass::class);
+        ->buildQuery()
+        ->query;
+
+$statement = Query::exec($select)->fetchAll(PDO::FETCH_ASSOC);
 
 // INICIO DEBUG
         echo ((microtime(true) - $_SERVER['REQUEST_TIME_FLOAT']) / 1000).' ms';
-        echo '<pre>'; var_dump($select); echo '</pre>'; die;
+        echo '<pre>'; var_dump($statement); echo '</pre>'; die;
 // FIM DEBUG
