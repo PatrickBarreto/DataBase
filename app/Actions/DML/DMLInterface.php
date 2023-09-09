@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions;
+namespace DataBase\Actions\DML;
 
 /**
  * Interface of the DML commands, comands that will manipulate data on the data base. 

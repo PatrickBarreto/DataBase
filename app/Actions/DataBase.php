@@ -1,16 +1,16 @@
 <?php
 
-namespace App;
+namespace DataBase\Actions;
 
 use PDO;
 use PDOException;
 use PDOStatement;
-use App\Exceptions\ExceptionHandler;
+use DataBase\Exceptions\ExceptionHandler;
 
 /**
  * Abstract class with ressources that anyone data base action will need, this class care data base layer methods.
  */
-abstract class DataBaseHandler {
+abstract class DataBase {
 
     private PDO $pdo;
 

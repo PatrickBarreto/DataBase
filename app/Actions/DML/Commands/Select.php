@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Actions\Commands;
+namespace DataBase\Actions\DML\Commands;
 
-use App\Actions\ActionsDML;
+use DataBase\Actions\DML\DML;
 
 /**
  * Class responsable to be a Select query constructor
  */
-class Select extends ActionsDML {
+class Select extends DML {
   
     public bool $distinct = false;  
     public string $fields = "*";

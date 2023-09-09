@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Actions\Commands;
+namespace DataBase\Actions\DML\Commands;
 
-use App\Actions\ActionsDML;
-use App\Exceptions\ExceptionHandler;
+use DataBase\Actions\DML\DML;
+use DataBase\Exceptions\ExceptionHandler;
 
 /**
  * Class responsable to be a Delete query constructor
  */
-class Delete extends ActionsDML{
+class Delete extends DML{
 
     /**
      * Build the query sentense for a delete query

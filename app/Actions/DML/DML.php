@@ -1,19 +1,20 @@
 <?php
 
-namespace App\Actions;
+namespace DataBase\Actions\DML;
 
 use stdClass;
 use PDOStatement;
-use App\DataBaseHandler;
-use App\Actions\DMLInterface;
-use App\Exceptions\ExceptionHandler;
+use DataBase\Actions\DataBase;
+use DataBase\Actions\DML\DMLInterface;
+use DataBase\Actions\DML\DMLTrait;
+use DataBase\Exceptions\ExceptionHandler;
 
 /**
  * Abstract Class with commom ressources for the heiress class.
  */
-abstract class ActionsDML extends DataBaseHandler implements DMLInterface{
+abstract class DML extends DataBase implements DMLInterface{
 
-    use QueryTrait;
+    use DMLTrait;
 
     public string $type = '';
     public string $where = '';

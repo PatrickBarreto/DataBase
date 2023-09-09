@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Actions\Commands;
+namespace DataBase;
 
-use App\DataBaseHandler;
+use DataBase\Actions\DataBase;
 
-class Query extends DataBaseHandler{
+class Query extends DataBase{
 
     /**
      * This method is responsable to prepare to execute directyly anyone user query
