@@ -1,10 +1,21 @@
 {
+    "name": "patrick-barreto/data-base",
+    "description": "Basic ORM to make a CRUD at model class very easy",
+    "type": "library",
+    "license": "GPL-3.0=or-later",
+    "author": [
+        {
+            "name": "Patrick Barreto"
+        }
+    ],
+
     "autoload": {
         "psr-4": {
             "DataBase\\": "app/"
         }
     },
     "require": {
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "php":">=7.0"
     }
 }
