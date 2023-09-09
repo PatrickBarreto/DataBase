@@ -17,6 +17,7 @@ If you have an idea or pull request to make, do it. Ideas are very welcome.
 
 use DataBase\Crud;
 use DataBase\Actions\DML\Commands\Select;
+use DataBase\Query;
 
 1 Way
 /////// Use the Crud Instance
