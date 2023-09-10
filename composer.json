@@ -8,7 +8,7 @@
             "name": "Patrick Barreto"
         }
     ],
-
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "DataBase\\": "app/"
