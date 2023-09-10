@@ -13,6 +13,18 @@ If you have an idea or pull request to make, do it. Ideas are very welcome.
 composer require patrick-barreto/data-base
 ```
 
+# .env
+If in your project you don't have any .env loader lib, in this project you will downlod the vlucas/dotenv.
+To initiate the .env variables you need to run this command in your index.php or other archive that run before then Data Base Actions
+- Important: 
+  - The .env must be in __DIR__ value.
+  - The .env.enxemple variables that the data base lib needs is in vendor/patrick-barreto/data-base/.env.exemple, copy this and put in your .env.
+
+```sh
+$dotenv = Dotenv\Dotenv::createUnsafeImmutable(__DIR__);
+$dotenv->load();
+```
+
 # How to Use
 ```php
 
