@@ -18,7 +18,7 @@ abstract class DataBase {
      * This method is responsible for building the PDO instance for manipulation with the database.
      *
      */
-    public function makeConnection(){        
+    protected function makeConnection(){        
         try{
             $this->pdo = new PDO(getenv('DB_CONNECTION').':host='.getenv('DB_HOST').':'.getenv('DB_PORT').';dbname='.getenv('DB_DATABASE'),
             getenv('DB_USERNAME'),getenv('DB_PASSWORD'),$this->setOptionsPDO());
@@ -26,10 +26,6 @@ abstract class DataBase {
            echo $e->getMessage();
            exit;
         }
-    }
- 
-    public function destroyConnection(){
-        $this->pdo = '';
     }
 
     /**
