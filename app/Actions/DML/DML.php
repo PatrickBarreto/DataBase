@@ -20,6 +20,7 @@ abstract class DML extends DataBase implements DMLInterface{
     public string $where = '';
     public string $whereIn = '';
     public string $query = '';
+    public string $join = '';
     protected string $table = '';
     
     protected PDOStatement $statement;
@@ -70,6 +71,33 @@ abstract class DML extends DataBase implements DMLInterface{
         $options = $this->convertArrayToQueryPattern($options, 'whereIn');
         $this->where = '';
         $this->whereIn = "WHERE {$column} IN ({$options})";
+        return $this;
+    }
+
+
+     /**
+     * This methos is responsable to do JOINS for query heir class instance.
+     *
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param string $type, Acepted Values: [ INNER, LEFT, RIGHT, FULL, CROSS ]
+     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @return $this
+     */
+    public function setJoin(array $newTableJoin, string $type = 'INNER', array $joinedTable = null){    
+        if($type == 'CROSS') {
+            $this->join .= " {$type} JOIN {$newTableJoin['nameTable']} ";
+            return $this;
+        }
+
+        if(!$joinedTable) {
+           new ExceptionHandler("To do a join you need to inform the past joined table that will associate to the new join table", 400);
+        }
+        
+        $newTableJoin['columnJoin'] = empty($newTableJoin['columnJoin']) ?  'id' : $newTableJoin['columnJoin'];
+        $joinedTable['columnJoin'] = empty($joinedTable['columnJoin']) ?  'id' : $joinedTable['columnJoin'];
+
+        $this->join .= " {$type} JOIN {$newTableJoin['nameTable']} ON {$newTableJoin['nameTable']}.{$newTableJoin['columnJoin']} = {$joinedTable['nameTable']}.{$joinedTable['columnJoin']} ";
+
         return $this;
     }
 

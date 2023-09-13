@@ -46,6 +46,7 @@ trait DMLTrait{
                 if($type == 'insert') $formatValues[] = '('.implode(', ', $formatData).')';
                 if($type == 'update') $formatValues[] =  $key.' = '.implode(', ', $formatData);
                 if($type == 'whereIn') $formatValues[] = implode(', ', $formatData);
+                if($type == 'join') $formatValues[] = implode(' ', $formatData);
            }
        }
 
