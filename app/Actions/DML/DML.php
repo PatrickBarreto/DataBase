@@ -48,6 +48,7 @@ abstract class DML extends DataBase implements DMLInterface{
         return $this;
     }
 
+    
     /**
      * This method is responsable to set the Where Simple Conditction for the query of instance class that heirded this class.
      *
@@ -75,31 +76,100 @@ abstract class DML extends DataBase implements DMLInterface{
     }
 
 
-     /**
-     * This methos is responsable to do JOINS for query heir class instance.
+
+    /**
+     * This method is responsable to concat the Inner Join command
      *
      * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
-     * @param string $type, Acepted Values: [ INNER, LEFT, RIGHT, FULL, CROSS ]
      * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
      * @return $this
      */
-    public function setJoin(array $newTableJoin, string $type = 'INNER', array $joinedTable = null){    
-        if($type == 'CROSS') {
-            $this->join .= " {$type} JOIN {$newTableJoin['nameTable']} ";
+    public function setInnerJoin(array $newTableJoin, array $joinedTable) {
+        $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
+        $this->concatJoinProperty('INNER', $newTableJoin, $joinedTable);
+        return $this;
+    }
+
+    /**
+     * This method is responsable to concat the Right Join command
+     *
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @return $this
+     */
+    public function setRightJoin(array $newTableJoin, array $joinedTable) {
+        $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
+        $this->concatJoinProperty('RIGHT', $newTableJoin, $joinedTable);
+        return $this;
+    }
+    /**
+     * This method is responsable to concat the Left Join command
+     *
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @return $this
+     */
+    public function setLeftJoin(array $newTableJoin, array $joinedTable) {
+        $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
+        $this->concatJoinProperty('LEFT', $newTableJoin, $joinedTable);
+        return $this;
+    }
+
+    /**
+     * This method is responsable to concat the Left Join command
+     *
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @return $this
+     */
+    public function setFullJoin(array $newTableJoin, array $joinedTable) {
+        $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
+        $this->concatJoinProperty('FULL', $newTableJoin, $joinedTable);
+        return $this;
+    }
+
+    /**
+     * This method is responsable to concat the Left Join command
+     *
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @return $this
+     */
+    public function setCrossJoin(array $newTableJoin, array $joinedTable) {
+        $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
+        $this->concatJoinProperty('CROSS', $newTableJoin, $joinedTable);
+        return $this;
+    }
+
+    /**
+     * This method is responsable to set id was default join columns if it wasn't declared
+     *
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @return void
+     */
+    private function setDefaultJoinColumn(array &$newTableJoin, array &$joinedTable){
+        $newTableJoin['columnJoin'] = empty($newTableJoin['columnJoin']) ?  'id' : $newTableJoin['columnJoin'];
+        $joinedTable['columnJoin'] = empty($joinedTable['columnJoin']) ?  'id' : $joinedTable['columnJoin'];
+    }
+
+    /**
+     * This method is responsable to concat the join property
+     * @param string $typeJoin
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @return void
+     */
+    private function concatJoinProperty(string $typeJoin, array $newTableJoin, array $joinedTable = null) {
+        if($typeJoin == 'CROSS' || $typeJoin == 'FULL') {
+            $this->join .= " {$typeJoin} JOIN {$newTableJoin['nameTable']} ";
             return $this;
         }
 
-        if(!$joinedTable) {
-           new ExceptionHandler("To do a join you need to inform the past joined table that will associate to the new join table", 400);
-        }
-        
-        $newTableJoin['columnJoin'] = empty($newTableJoin['columnJoin']) ?  'id' : $newTableJoin['columnJoin'];
-        $joinedTable['columnJoin'] = empty($joinedTable['columnJoin']) ?  'id' : $joinedTable['columnJoin'];
-
-        $this->join .= " {$type} JOIN {$newTableJoin['nameTable']} ON {$newTableJoin['nameTable']}.{$newTableJoin['columnJoin']} = {$joinedTable['nameTable']}.{$joinedTable['columnJoin']} ";
-
-        return $this;
+        $this->join .= " {$typeJoin} JOIN {$newTableJoin['nameTable']} ON {$newTableJoin['nameTable']}.{$newTableJoin['columnJoin']} = {$joinedTable['nameTable']}.{$joinedTable['columnJoin']} ";
     }
+
+
 
     /**
      * this method is responsable to run the query of the class without a fetch result. 
