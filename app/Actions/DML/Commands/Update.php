@@ -29,7 +29,7 @@ class Update extends DML{
       */
      public function buildQuery(){
           $table = $this->getTableName();
-          $query = "UPDATE {$table} {$this->set} {$this->where} {$this->whereIn}";
+          $query = "UPDATE {$table} {$this->join} {$this->set} {$this->where} {$this->whereIn}";
           $this->query = $query;
           return $query;
      }
