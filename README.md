@@ -3,7 +3,6 @@ If you dont't have a php environment with a database, you can use this docker en
 https://github.com/PatrickBarreto/baseBackend
 
 The next step of this code is:
-- Implement the join ressource
 - Implement the essentials DDL Commands (CREATE, DROP, TRUNCATE, ALTER)
 
 If you have an idea or pull request to make, do it. Ideas are very welcome.
@@ -26,41 +25,57 @@ $dotenv->load();
 ```
 
 # How to Use
+### Use the Crud Instance
 ```php
+<?php
+
+namespace Your\NameSpace
 
 use DataBase\Crud;
+
+$homens = new Crud('homens');
+$mulheres = new Crud('mulheres');
+$animais = new Crud('animais');
+
+
+$homens->insert->setFields(['name'])->setValues([["Pedro"],["João"],["Paulo"]])->runQuery();
+
+$mulheres->insert->setFields(['name'])->setValues([["Maria"],["Ana"],["Marcia"]])->runQuery();
+
+$animais->insert->setFields(['name'])->setValues([["Gato"],["Cachorro"],["Papagaio"]])->runQuery();
+
+$mulheres->select->setFields(['homens.name as homemName, mulheres.name as mulherName'])
+                ->setInnerJoin(['nameTable' => 'homens'], ['nameTable' => 'mulheres'] )
+                ->setWhere('homens.name = "João"');
+
+//LIST ALL SEARCHED VALUES
+var_dump($mulheres->select->fetchObject(true)); echo '</pre>'; die;este->select->fetchObject(true);
+```
+
+
+### Use the Command Instance
+
+```php
+<?php
+
+namespace Your\NameSpace
+
 use DataBase\Actions\DML\Commands\Select;
-use DataBase\Query;
-
-1 Way
-/////// Use the Crud Instance
-
-$crudTeste = new Crud('tableName');
-
-//Use de Insert Command with a Crud Class
-$crudTeste->insert->setFields(['nome'])->setValues(["pedro"])->runQuery();
-
-//Use de Update Command with a Crud Class
-$crudTeste->update->setSet(['nome'=>'joão'])->setWhere('nome = "Pedro"')->runQuery();
-
-//Use de Select Command with a Crud Class
-$crudTeste->select->fetchObject(true);
-
-
-
-2 Way
-//////// Use the command Instance
 
 $select = new Select;
 $select->setTable('tableName');
 $select->setWhereIn('nome', ['pedro', 'joão', 'josé']);
 $select->fetchAssoc(true);
+```
 
+### Use the Query Class
+IMPORTANT: Be carefull, here you controll what will be running. The application won't do nothing but execute the query.
+```php
+<?php
 
+namespace Your\NameSpace
 
-3 Way
-/////// Use the Query Class
-Be carefull, here you controll what will be running. The application won't do nothing but execute the query.
+use DataBase\Query;
 
 $sql = "SELECT * FROM teste";
 $query = new Query;
@@ -85,7 +100,22 @@ This method is responsable to set the Where Simple Conditction for the query of 
   - setWhere(string $condition) 
 
 This method is responsable to set the Where In Conditction for the query of instance class that heirded this class
-  - setWhereIn(string $column, array $options) 
+  - setWhereIn(string $column, array $options)
+
+This method is responsable to concat the Inner Join command
+  - setInnerJoin(array $newTableJoin, array $joinedTable)
+
+This method is responsable to concat the Right Join command
+  - setRightJoin(array $newTableJoin, array $joinedTable)
+
+This method is responsable to concat the Left Join command
+  - setLeftJoin(array $newTableJoin, array $joinedTable)
+
+This method is responsable to concat the Full Join command
+  - setFullJoin(array $newTableJoin, array $joinedTable)
+
+This method is responsable to concat the Cross Join command
+  - setCrossJoin(array $newTableJoin, array $joinedTable)
 
 
 ## Select
