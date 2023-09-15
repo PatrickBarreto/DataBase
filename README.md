@@ -90,104 +90,162 @@ It is the same if instance manually or directilly with Crud Instance
 
 
 ### Common for all down classes
-This method is responsable to check if a table name was seted in the instance of class that heirded this clas
-  - getTableName()
+This method is responsable to check if a table name was seted in the instance of class that heirded this class
+```php
+  public function getTableName()
+```
 
-This method is responsable to set a table in the instance of class that heirded this clas
-  - setTable(string $tableName) 
+This method is responsable to set a table in the instance of class that heirded this class
+```php
+  public function setTable(string $tableName)
+```
 
 This method is responsable to set the Where Simple Conditction for the query of instance class that heirded this class
-  - setWhere(string $condition) 
+```php
+  public function setWhere(string $condition)
+```
 
 This method is responsable to set the Where In Conditction for the query of instance class that heirded this class
-  - setWhereIn(string $column, array $options)
+```php
+  public function setWhereIn(string $column, array $options)
+```
 
 This method is responsable to concat the Inner Join command
-  - setInnerJoin(array $newTableJoin, array $joinedTable)
+```php
+  public function setInnerJoin(array $newTableJoin, array $joinedTable)
+```
 
 This method is responsable to concat the Right Join command
-  - setRightJoin(array $newTableJoin, array $joinedTable)
+```php
+  public function setRightJoin(array $newTableJoin, array $joinedTable)
+```
 
 This method is responsable to concat the Left Join command
-  - setLeftJoin(array $newTableJoin, array $joinedTable)
+```php
+  public function setLeftJoin(array $newTableJoin, array $joinedTable)
+```
 
 This method is responsable to concat the Full Join command
-  - setFullJoin(array $newTableJoin, array $joinedTable)
+```php
+  public function setFullJoin(array $newTableJoin, array $joinedTable)
+```
 
 This method is responsable to concat the Cross Join command
-  - setCrossJoin(array $newTableJoin, array $joinedTable)
+```php
+  public function setCrossJoin(array $newTableJoin, array $joinedTable)
+```
 
 
 ## Select
-### DataBase\Actions\DML\Commands\Select;
+### DataBase\Actions\DML\Commands\Select
 Set the distinct option, by default it is false
-  - setDistinct(bool $requiereDistinct)
+```php
+  public function setDistinct(bool $requiereDistinct)
+```
 
 Set the fields option, by default its '*'
-  - setFields(array $fields)
+```php
+  public function setFields(array $fields)
+```
 
 Set the limit option
-  - setLimit(int $limit, int $offset = 0)
+```php
+  public function setLimit(int $limit, int $offset = 0)
+```
 
 Set the order option, ASC or DESC
-  - setOrder(string $fields, string $order = "ASC")
+```php
+  public function setOrder(string $fields, string $order = "ASC")
+```
 
 Set the group by option.
-  - setGroupBy(array $fields)
+```php
+  public function setGroupBy(array $fields)
+```
 
 Set the having option
-  - setHaving(string $condition)
+```php
+  public function setHaving(string $condition)
+```
 
 Build the query sentense for a Select query
-  - buildQuery(bool $subquery = false)
+```php
+  public function buildQuery(bool $subquery = false)
+```
  
 This method id responsable to return data with an associative array
-  - fetchAssoc(bool $returnAll = false)
+```php
+  public function fetchAssoc(bool $returnAll = false)
+```
 
 This method is responsable to return data with an object of a class type. By default it is stdClass
-  - fetchObject(bool $returnAll = false, string $class = stdClass::class)
+```php
+  public function fetchObject(bool $returnAll = false, string $class = stdClass::class)
+```
 
 
 
 ## Insert
-### DataBase\Actions\DML\Commands\Insert;
+### DataBase\Actions\DML\Commands\Insert
 
 Set the ignore option, by default it is false
-  - setIgnore(bool $requiereIgnore)
+```php
+  public function setIgnore(bool $requiereIgnore)
+```
 
 Set the fields option, by default it is false
-  - setFields(array $fields)
+```php
+  public function setFields(array $fields)
+```
 
 Set the values option, by default it is false
-  - setValues(array $values)
+```php
+  public function setValues(array $values)
+```
 
 Set the values with a SELECT query
-  - setInsertSelect(string $query)
+```php
+  public function setInsertSelect(string $query)
+```
  
 Build the query sentense for a Insert query
-  - buildQuery()
+```php
+  public function buildQuery()
+```
 
 This method is responsable to run the query of the class without a fetch result.
-  - runQuery()
+```php
+  public function runQuery()
+```
 
 
 
 ## Update
-### DataBase\Actions\DML\Commands\Update;
+### DataBase\Actions\DML\Commands\Update
 This method is responsable for set a SET command for an Update query
-  - setSet(array $columnValue)
+```php
+  public function setSet(array $columnValue)
+```
 
 Build the query sentense for a Update query
-  - buildQuery()
+```php
+  public function buildQuery()
+```
  
 This method is responsable to run the query of the class without a fetch result.
-  - runQuery()
+```php
+  public function runQuery()
+```
 
 
 ## Delete
 ### DataBase\Actions\DML\Commands\Delete
 Build the query sentense for a delete query
-  - buildQuery()
+```php
+  public function buildQuery()
+```
 
 This method is responsable to run the query of the class without a fetch result.
-  - runQuery()
+```php
+  public function runQuery()
+```
