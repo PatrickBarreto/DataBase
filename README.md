@@ -49,7 +49,7 @@ $mulheres->select->setFields(['homens.name as homemName, mulheres.name as mulher
                 ->setWhere('homens.name = "João"');
 
 //LIST ALL SEARCHED VALUES
-var_dump($mulheres->select->fetchObject(true)); echo '</pre>'; die;este->select->fetchObject(true);
+var_dump($mulheres->select->fetchObject(true)); echo '</pre>'; die;
 ```
 
 
