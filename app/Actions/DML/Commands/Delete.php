@@ -18,7 +18,8 @@ class Delete extends DML{
      public function buildQuery(){
           $table = $this->getTableName();
           if($this->where || $this->whereIn){
-               $query = "DELETE FROM {$table} {$this->join} {$this->where} {$this->whereIn}";
+               $tableToDelete = empty($this->join) ? '' : $table;
+               $query = "DELETE {$tableToDelete} FROM {$table} {$this->join} {$this->where} {$this->whereIn}";
                $this->query = $query;
                return $this;
           }
