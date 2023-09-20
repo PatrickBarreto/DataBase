@@ -6,13 +6,15 @@ use PDO;
 use PDOException;
 use PDOStatement;
 use DataBase\Exceptions\ExceptionHandler;
+use DataBase\Actions\DBInterface;
 
 /**
  * Abstract class with ressources that anyone data base action will need, this class care data base layer methods.
  */
-abstract class DataBase {
+abstract class DataBase implements DBInterface {
 
     private PDO $pdo;
+    protected string $table = '';
 
     /**
      * This method is responsible for building the PDO instance for manipulation with the database.

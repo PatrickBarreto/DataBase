@@ -5,49 +5,22 @@ namespace DataBase\Actions\DML;
 use stdClass;
 use PDOStatement;
 use DataBase\Actions\DataBase;
-use DataBase\Actions\DML\DMLInterface;
-use DataBase\Actions\DML\DMLTrait;
-use DataBase\Exceptions\ExceptionHandler;
+use DataBase\Actions\DBTrait;
 
 /**
  * Abstract Class with commom ressources for the heiress class.
  */
-abstract class DML extends DataBase implements DMLInterface{
+abstract class DML extends DataBase {
 
-    use DMLTrait;
+    use DBTrait;
 
     public string $type = '';
     public string $where = '';
     public string $whereIn = '';
     public string $query = '';
     public string $join = '';
-    protected string $table = '';
     
     protected PDOStatement $statement;
-
-    /**
-     * This method is responsable to check if a table name was seted in the instance of class that heirded this class
-     *
-     * @return string
-     */
-    public function getTableName(){
-        if(empty($this->table)) {
-            new ExceptionHandler("The table is not configured", 400, $this);
-        }
-        return $this->table;
-    }
-
-    /**
-     * This method is responsable to set a table in the instance of class that heirded this class
-     *
-     * @param string $tableName
-     * @return $this
-     */
-    public function setTable(string $tableName) {
-        $this->table = ' '.$tableName.' ';
-        return $this;
-    }
-
     
     /**
      * This method is responsable to set the Where Simple Conditction for the query of instance class that heirded this class.
@@ -169,20 +142,6 @@ abstract class DML extends DataBase implements DMLInterface{
         $this->join .= " {$typeJoin} JOIN {$newTableJoin['nameTable']} ON {$newTableJoin['nameTable']}.{$newTableJoin['columnJoin']} = {$joinedTable['nameTable']}.{$joinedTable['columnJoin']} ";
     }
 
-
-
-    /**
-     * this method is responsable to run the query of the class without a fetch result. 
-     *
-     * @return $this
-     */
-    public function runQuery(){
-        $this->makeConnection();
-        $this->createQueryIfNecessary();
-        $this->statement = $this->tryQuery($this->query);
-        return $this;
-    }
-
     /**
      * This method id responsable to return data with an associative array
      *
@@ -210,16 +169,5 @@ abstract class DML extends DataBase implements DMLInterface{
             return $this->statement->fetchAll(\PDO::FETCH_CLASS, $class);
         }
         return $this->statement->fetchObject($class);
-    }
-
-    /**
-     * this method is responsable to check existense and create a query if necessary.
-     *
-     * @return void
-     */
-    private function createQueryIfNecessary() {
-        if(empty($this->query)){
-            $this->buildQuery();
-        }
     }
 }
