@@ -93,7 +93,7 @@ class Select extends DML {
         $distinct = ($this->distinct) ? "DISTINCT " : null;
         $table    = $this->getTableName();
 
-        $query = "SELECT {$distinct} {$this->fields} FROM {$table} {$this->join} {$this->where} {$this->whereIn} {$this->limit} {$this->order} {$this->group} {$this->having}";
+        $query = "SELECT {$distinct} {$this->fields} FROM {$table} {$this->join} {$this->where} {$this->whereIn} {$this->group} {$this->having} {$this->order} {$this->limit}";
         
         if($subquery){
             $query = "({$query})";
