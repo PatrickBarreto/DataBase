@@ -9,13 +9,7 @@
         }
     ],
     "minimum-stability": "stable",
-    "autoload": {
-        "psr-4": {
-            "DataBase\\": "app/"
-        }
-    },
     "require": {
-        "vlucas/phpdotenv": "^5.5",
         "php":">=7.0"
     }
 }
