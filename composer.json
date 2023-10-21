@@ -9,6 +9,11 @@
         }
     ],
     "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "DataBase\\": "app/"
+        }
+    },
     "require": {
         "php":">=7.0"
     }
