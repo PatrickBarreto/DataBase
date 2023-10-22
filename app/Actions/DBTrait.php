@@ -1,12 +1,38 @@
 <?php
 
-namespace DataBase\Actions\DML;
+namespace DataBase\Actions;
+
+use DataBase\Exceptions\ExceptionHandler;
 
 /**
  * Trait with functions that can be useful for more than one class, to solte pontual problems, 
  * but not necessarilly are direct part of the conection and manipulate database flow.
  */
-trait DMLTrait{
+trait DBTrait{
+
+
+    /**
+     * This method is responsable to check if a table name was seted in the instance of class that heirded this class
+     *
+     * @return string
+     */
+    public function getTableName(){
+        if(empty($this->table)) {
+            new ExceptionHandler("The table is not configured", 400, $this);
+        }
+        return $this->table;
+    }
+
+    /**
+     * This method is responsable to set a table in the instance of class that heirded this class
+     *
+     * @param string $tableName
+     * @return $this
+     */
+    public function setTable(string $tableName) {
+        $this->table = ' '.$tableName.' ';
+        return $this;
+    }
     
     /**
      * Prepare data by the format that a query need
@@ -51,6 +77,30 @@ trait DMLTrait{
        }
 
        return implode(', ', $formatValues);
+    }
+
+    /**
+     * this method is responsable to run the query of the class without a fetch result. 
+     *
+     * @return $this
+     */
+    public function runQuery(){
+        $this->makeConnection();
+        $this->createQueryIfNecessary();
+        $this->statement = $this->tryQuery($this->query);
+        return $this;
+    }
+
+
+    /**
+     * this method is responsable to check existense and create a query if necessary.
+     *
+     * @return void
+     */
+    private function createQueryIfNecessary() {
+        if(empty($this->query)){
+            $this->buildQuery();
+        }
     }
 
 }
