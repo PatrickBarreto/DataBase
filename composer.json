@@ -1,6 +1,6 @@
 {
     "name": "patrick-barreto/data-base",
-    "description": "Basic ORM to make a CRUD at model class very easy",
+    "description": "Basic ORM to manipulate database and make a CRUD at model class very easy",
     "type": "library",
     "license": "GPL-3.0-or-later",
     "author": [
@@ -15,6 +15,6 @@
         }
     },
     "require": {
-        "php":">=7.0"
-    }
+        "php":">=7.0",
+        "patrick-barreto/exception": "^1.0.0"
 }

@@ -27,4 +27,17 @@ class Query extends DataBase{
         $selfClass = new self;
         return $selfClass->runQuery($query);
     }
+
+    /**
+     * Just to conform with interface.
+     */
+    public function setTable($table){
+        
+    }
+    /**
+     * Just to conform with interface.
+     */
+    public function buildQuery(){
+        
+    }
 }
