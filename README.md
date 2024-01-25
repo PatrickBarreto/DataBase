@@ -45,7 +45,7 @@ $mulheres->insert->setFields(['name'])->setValues([["Maria"],["Ana"],["Marcia"]]
 $animais->insert->setFields(['name'])->setValues([["Gato"],["Cachorro"],["Papagaio"]])->runQuery();
 
 $mulheres->select->setFields(['homens.name as homemName, mulheres.name as mulherName'])
-                ->setInnerJoin(['nameTable' => 'homens'], ['nameTable' => 'mulheres'] )
+                ->setInnerJoin(['table' => 'homens'], ['table' => 'mulheres'] )
                 ->setWhere('homens.name = "João"');
 
 //LIST ALL SEARCHED VALUES
@@ -112,27 +112,27 @@ This method is responsable to set the Where In Conditction for the query of inst
 
 This method is responsable to concat the Inner Join command
 ```php
-  public function setInnerJoin(array $newTableJoin, array $joinedTable)
+  public function setInnerJoin(array $joinedTable, array $newTableJoin)
 ```
 
 This method is responsable to concat the Right Join command
 ```php
-  public function setRightJoin(array $newTableJoin, array $joinedTable)
+  public function setRightJoin(array $joinedTable, array $newTableJoin)
 ```
 
 This method is responsable to concat the Left Join command
 ```php
-  public function setLeftJoin(array $newTableJoin, array $joinedTable)
+  public function setLeftJoin(array $joinedTable, array $newTableJoin)
 ```
 
 This method is responsable to concat the Full Join command
 ```php
-  public function setFullJoin(array $newTableJoin, array $joinedTable)
+  public function setFullJoin(array $newTableJoin)
 ```
 
 This method is responsable to concat the Cross Join command
 ```php
-  public function setCrossJoin(array $newTableJoin, array $joinedTable)
+  public function setCrossJoin(array $newTableJoin)
 ```
 
 
