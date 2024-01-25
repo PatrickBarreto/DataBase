@@ -4,6 +4,7 @@ namespace DataBase\Actions\DML\Commands;
 
 use DataBase\Actions\DML\DML;
 use DataBase\Exceptions\ExceptionHandler;
+use Exception\Exception;
 
 /**
  * Class responsable to be a Delete query constructor
@@ -23,6 +24,6 @@ class Delete extends DML{
                $this->query = $query;
                return $this;
           }
-          new ExceptionHandler("Anyone Where Condiction needs to be seted to run a Delete command", 400, $this);
+          Exception::throw("Anyone Where Condiction needs to be seted to run a Delete command", 400, (array)$this);
      }
 }
