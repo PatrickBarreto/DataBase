@@ -49,15 +49,14 @@ abstract class DML extends DataBase {
     }
 
 
-
     /**
      * This method is responsable to concat the Inner Join command
      *
-     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
      * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
      * @return $this
      */
-    public function setInnerJoin(array $newTableJoin, array $joinedTable) {
+    public function setInnerJoin(array $joinedTable, array $newTableJoin) {
         $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
         $this->concatJoinProperty('INNER', $newTableJoin, $joinedTable);
         return $this;
@@ -66,49 +65,50 @@ abstract class DML extends DataBase {
     /**
      * This method is responsable to concat the Right Join command
      *
-     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
      * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
      * @return $this
      */
-    public function setRightJoin(array $newTableJoin, array $joinedTable) {
+    public function setRightJoin(array $joinedTable, array $newTableJoin) {
         $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
         $this->concatJoinProperty('RIGHT', $newTableJoin, $joinedTable);
         return $this;
     }
+
     /**
      * This method is responsable to concat the Left Join command
      *
-     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
      * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
      * @return $this
      */
-    public function setLeftJoin(array $newTableJoin, array $joinedTable) {
+    public function setLeftJoin(array $joinedTable, array $newTableJoin) {
         $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
         $this->concatJoinProperty('LEFT', $newTableJoin, $joinedTable);
         return $this;
     }
 
     /**
-     * This method is responsable to concat the Left Join command
+     * This method is responsable to concat the Full Join command
      *
-     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
-     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $newTableJoin["nameTable"=>"value"]
      * @return $this
      */
-    public function setFullJoin(array $newTableJoin, array $joinedTable) {
+    public function setFullJoin(array $newTableJoin) {
+        $joinedTable = [];
         $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
         $this->concatJoinProperty('FULL', $newTableJoin, $joinedTable);
         return $this;
     }
 
     /**
-     * This method is responsable to concat the Left Join command
+     * This method is responsable to concat the Cross Join command
      *
-     * @param array $newTableJoin["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
-     * @param array $joinedTable["nameTable"=>"value", "columnJoin"=>"value"] *by default the columnJoin is 'id'
+     * @param array $newTableJoin["nameTable"=>"value"]
      * @return $this
      */
-    public function setCrossJoin(array $newTableJoin, array $joinedTable) {
+    public function setCrossJoin(array $newTableJoin) {
+        $joinedTable = [];
         $this->setDefaultJoinColumn($newTableJoin, $joinedTable);
         $this->concatJoinProperty('CROSS', $newTableJoin, $joinedTable);
         return $this;
@@ -123,6 +123,9 @@ abstract class DML extends DataBase {
      */
     private function setDefaultJoinColumn(array &$newTableJoin, array &$joinedTable){
         $newTableJoin['columnJoin'] = empty($newTableJoin['columnJoin']) ?  'id' : $newTableJoin['columnJoin'];
+        
+        if (empty($joinedTable)) return;
+
         $joinedTable['columnJoin'] = empty($joinedTable['columnJoin']) ?  'id' : $joinedTable['columnJoin'];
     }
 
