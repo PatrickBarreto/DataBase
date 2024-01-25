@@ -68,6 +68,23 @@ $select->setWhereIn('nome', ['pedro', 'joão', 'josé']);
 $select->fetchAssoc(true);
 ```
 
+
+### Use the QueryExtension
+IMPORTANT: With this, just extend this class and set table like this. You model will have SQL commands from this table.
+```php
+<?php
+
+use DataBase\CrudExtension;
+
+class model extends CrudExtension{
+    public static string $table = "users";
+}
+
+//instance with CrudExtension
+$users = new model();
+
+```
+
 ### Use the Query Class
 IMPORTANT: Be carefull, here you controll what will be running. The application won't do nothing but execute the query.
 ```php
@@ -82,7 +99,6 @@ $query = new Query;
 $result = $query->runQuery($sql)->fetchAll(PDO::FETCH_ASSOC);
 
 ```
-
 
 
 # Ressources for DML command Class
