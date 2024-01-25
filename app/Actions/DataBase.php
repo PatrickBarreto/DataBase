@@ -5,8 +5,8 @@ namespace DataBase\Actions;
 use PDO;
 use PDOException;
 use PDOStatement;
-use DataBase\Exceptions\ExceptionHandler;
 use DataBase\Actions\DBInterface;
+use Exception\Exception;
 
 /**
  * Abstract class with ressources that anyone data base action will need, this class care data base layer methods.
@@ -46,9 +46,9 @@ abstract class DataBase implements DBInterface {
         }catch(PDOException $e){
             $this->pdo->rollBack();
             if(getenv('DB_DEBUG_BAD_QUERY') === "true"){
-                new ExceptionHandler($e->getMessage(), 400, (object)['query' => $query]);
+                Exception::throw($e->getMessage(), 400, ['query' => $query]);
             }
-            new ExceptionHandler($e->getMessage(), 400);
+            Exception::throw($e->getMessage(), 400,);
         }
     }
 

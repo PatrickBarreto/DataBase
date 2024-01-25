@@ -2,7 +2,7 @@
 
 namespace DataBase\Actions;
 
-use DataBase\Exceptions\ExceptionHandler;
+use Exception\Exception;
 
 /**
  * Trait with functions that can be useful for more than one class, to solte pontual problems, 
@@ -18,7 +18,7 @@ trait DBTrait{
      */
     public function getTableName(){
         if(empty($this->table)) {
-            new ExceptionHandler("The table is not configured", 400, $this);
+            Exception::throw("The table is not configured", 400);
         }
         return $this->table;
     }
