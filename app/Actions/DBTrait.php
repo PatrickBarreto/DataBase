@@ -108,7 +108,7 @@ trait DBTrait{
     private function setIntTypeForVetor(array $values) {
         foreach($values as $key1=>$value) {
             foreach($value as $key2=>$item) {
-                if(isset($item) && preg_match('/^[0-9]*$/', $item)){
+                if(is_string($item) && preg_match('/^[0-9]*$/', $item)){
                     $values[$key1][$key2] = (int)$item;
                 }
             }
@@ -118,7 +118,7 @@ trait DBTrait{
 
     private function setIntTypeForArray(array $value) {
         foreach($value as $key1=>$item) {
-            if(isset($item) && preg_match('/^[0-9]*$/', $item)){
+            if(is_string($item) && preg_match('/^[0-9]*$/', $item)){
                 $value[$key1] = (int)$item;
             }
         }
@@ -129,7 +129,7 @@ trait DBTrait{
     private function setIntTypeForObjectVetor(array $values) {
         foreach($values as $key1=>$value) {
             foreach($value as $key2=>$item) {
-                if(isset($item) && preg_match('/^[0-9]*$/', $item)){
+                if(is_string($item) && preg_match('/^[0-9]*$/', $item)){
                     $values[$key1]->$key2 = (int)$item;
                 }
             }
@@ -140,7 +140,7 @@ trait DBTrait{
 
     private function setIntTypeForObject(object $value) {
         foreach($value as $key=>$item) {
-            if(isset($item) && preg_match('/^[0-9]*$/', $item)){
+            if(is_string($item) && preg_match('/^[0-9]*$/', $item)){
                 $value->$key = (int)$item;
             }
         }
