@@ -103,4 +103,49 @@ trait DBTrait{
         }
     }
 
+
+
+    private function setIntTypeForVetor(array $values) {
+        foreach($values as $key1=>$value) {
+            foreach($value as $key2=>$item) {
+                if(isset($item) && preg_match('/^[0-9]*$/', $item)){
+                    $values[$key1][$key2] = (int)$item;
+                }
+            }
+        }
+        return $values;
+    }
+
+    private function setIntTypeForArray(array $value) {
+        foreach($value as $key1=>$item) {
+            if(isset($item) && preg_match('/^[0-9]*$/', $item)){
+                $value[$key1] = (int)$item;
+            }
+        }
+        return $value;
+    }
+
+
+    private function setIntTypeForObjectVetor(array $values) {
+        foreach($values as $key1=>$value) {
+            foreach($value as $key2=>$item) {
+                if(isset($item) && preg_match('/^[0-9]*$/', $item)){
+                    $values[$key1]->$key2 = (int)$item;
+                }
+            }
+        }
+        return $values;
+    }
+
+
+    private function setIntTypeForObject(object $value) {
+        foreach($value as $key=>$item) {
+            if(isset($item) && preg_match('/^[0-9]*$/', $item)){
+                $value->$key = (int)$item;
+            }
+        }
+        return $value;
+    }
+
+
 }
