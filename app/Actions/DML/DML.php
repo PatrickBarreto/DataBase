@@ -153,10 +153,16 @@ abstract class DML extends DataBase {
      */
     public function fetchAssoc(bool $returnAll = false){
         $this->runQuery();
+
         if($returnAll){
-            return $this->statement->fetchAll(\PDO::FETCH_ASSOC);
+            $returnData = $this->setIntTypeForVetor($this->statement->fetchAll(\PDO::FETCH_ASSOC));
         }
-        return $this->statement->fetch(\PDO::FETCH_ASSOC);
+
+        if($value = $this->statement->fetch(\PDO::FETCH_ASSOC)){
+            $returnData = $this->setIntTypeForArray($value);
+        }
+
+        return $returnData ? $returnData : [];
     }
 
     /**
@@ -168,9 +174,15 @@ abstract class DML extends DataBase {
      */
     public function fetchObject(bool $returnAll = false, string $class = stdClass::class){
         $this->runQuery();
+        
         if($returnAll){
-            return $this->statement->fetchAll(\PDO::FETCH_CLASS, $class);
+            $returnData = $this->setIntTypeForObjectVetor($this->statement->fetchAll(\PDO::FETCH_CLASS, $class));
         }
-        return $this->statement->fetchObject($class);
+        
+        if($value = $this->statement->fetchObject($class)){
+            $returnData = $this->setIntTypeForObject($value);
+        }
+
+        return $returnData ? $returnData : new stdClass;
     }
 }
