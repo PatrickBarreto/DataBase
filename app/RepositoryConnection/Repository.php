@@ -14,10 +14,13 @@ use DataBase\RepositoryConnection\DataBaseCorrespondence;
 class Repository {
 
     private string $table;
+    
+    private DataBaseCorrespondence $dto;
 
     private array $action = [];
     
     public function __construct(DataBaseCorrespondence $dto){
+        $this->dto = $dto;
         $this->setTable($dto->getTableName());
         $this->action = [
             "insert" => (new Insert)->setTable($this->table),
@@ -30,6 +33,10 @@ class Repository {
     
     public function table(){
         return $this->table;
+    }
+
+    public function getDtoPath(){
+        return $this->dto->getDto();
     }
     
     public function setTable(string $tableName){
