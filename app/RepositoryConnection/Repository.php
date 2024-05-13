@@ -23,10 +23,10 @@ class Repository {
         $this->dto = $dto;
         $this->setTable($dto->getTableName());
         $this->action = [
-            "insert" => (new Insert)->setTable($this->table),
-            "select" => (new Select)->setTable($this->table),
-            "update" => (new Update)->setTable($this->table),
-            "delete" => (new Delete)->setTable($this->table),
+            "insert" => function(){ return (new Insert)->setTable($this->table); },
+            "select" => function(){ return (new Select)->setTable($this->table); },
+            "update" => function(){ return (new Update)->setTable($this->table); },
+            "delete" => function(){ return (new Delete)->setTable($this->table); }
         ];
         return $this;
     }
@@ -44,18 +44,18 @@ class Repository {
     }
 
     public function select(){
-        return $this->action['select'];
+        return $this->action['select']();
     }
 
     public function insert(){
-        return $this->action['insert'];
+        return $this->action['insert']();
     }
 
     public function update(){
-        return $this->action['update'];
+        return $this->action['update']();
     }
     
     public function delete(){
-        return $this->action['delete'];
+        return $this->action['delete']();
     }
 }
