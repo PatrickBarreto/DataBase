@@ -13,13 +13,57 @@ composer require patrick-barreto/data-base
 ```
 
 # .env
-You need to fill your environments variables. If you want do it easy use https://packagist.org/packages/patrick-barreto/dot-env
+You need to fill your environments variables. If you want make it easy use https://packagist.org/packages/patrick-barreto/dot-env
 
 ```php
-DotEnv\DotEnv::fill(PATH .ENV FILE);
+DotEnv\DotEnv::fill(PATH_.ENV_FILE);
 ```
 
 # How to Use
+
+### Repository
+
+```php
+//Model
+class Users extends DataBaseCorrespondence {
+    private static string $table = 'users';
+
+    public static function getTable(){
+        return self::$table;
+    }
+
+    public function getProperty($property){
+        return $this->$property;
+    }
+}
+
+
+//Repository
+class UserRepository extends Repository{
+
+    public function findUsers() {
+        return $this->select()->setFields(['id', 'name', 'email', 'phone'])
+                              ->fetchObject(false, $this->getDtoPath());
+    }
+}
+
+//Using in Controller for exemple
+class Users {
+  use UserRepository;
+  use Users;
+  
+  public function findUsers() {
+    //This will be and instance of UserRepository, class responsable to provide methods of User Object.
+    $usersRepository = new UserRepository(new Users);
+    
+    //This will return an instance of Users.
+    $users = $usersRepository->findUsers();
+
+  }
+}
+
+```
+
 ### Use the Crud Instance
 ```php
 <?php
@@ -43,8 +87,6 @@ $mulheres->select->setFields(['homens.name as homemName, mulheres.name as mulher
                 ->setInnerJoin(['table' => 'homens'], ['table' => 'mulheres'] )
                 ->setWhere('homens.name = "João"');
 
-//LIST ALL SEARCHED VALUES
-var_dump($mulheres->select->fetchObject(true)); echo '</pre>'; die;
 ```
 
 
@@ -61,23 +103,6 @@ $select = new Select;
 $select->setTable('tableName');
 $select->setWhereIn('nome', ['pedro', 'joão', 'josé']);
 $select->fetchAssoc(true);
-```
-
-
-### Use the QueryExtension
-IMPORTANT: With this, just extend this class and set table like this. You model will have SQL commands from this table.
-```php
-<?php
-
-use DataBase\CrudExtension;
-
-class model extends CrudExtension{
-    public static string $table = "users";
-}
-
-//instance with CrudExtension
-$users = new model();
-
 ```
 
 ### Use the Query Class
