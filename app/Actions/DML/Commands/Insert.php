@@ -13,6 +13,7 @@ class Insert extends DML {
      public string $fields;
      public string $values; 
      public string $insertSelect; 
+     public string $lastInsertId;
 
 
      /**
