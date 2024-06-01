@@ -87,7 +87,9 @@ trait DBTrait{
     public function runQuery(){
         $this->makeConnection();
         $this->createQueryIfNecessary();
-        $this->statement = $this->tryQuery($this->query);
+        $returnTryQuery = $this->tryQuery($this->query);
+        $this->statement = $returnTryQuery['statement'];
+        $this->lastInsertId = $returnTryQuery['lastInsertId'];
         return $this;
     }
 

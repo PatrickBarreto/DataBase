@@ -40,8 +40,9 @@ abstract class DataBase implements DBInterface {
         try{
             $this->pdo->beginTransaction();
             $statement = $this->pdo->query($query);
+            $lastInsertId = $this->pdo->lastInsertId();
             $this->pdo->commit();
-            return $statement;
+            return ["statement"=>$statement, "lastInsertId"=>$lastInsertId];
 
         }catch(PDOException $e){
             $this->pdo->rollBack();
