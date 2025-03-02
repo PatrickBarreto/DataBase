@@ -16,6 +16,6 @@
     },
     "require": {
         "php":">=7.0",
-        "patrick-barreto/exception": "^1.0.0"
+        "patrick-barreto/exception": "^1.0.1"
     }
 }

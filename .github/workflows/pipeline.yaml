@@ -1,4 +1,4 @@
-name: Authotizer CI
+name: Database CI
 
 on:
   push:
