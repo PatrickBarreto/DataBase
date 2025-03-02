@@ -38,6 +38,6 @@ class Query extends DataBase{
      * Just to conform with interface.
      */
     public function buildQuery(){
-        
+    
     }
 }
