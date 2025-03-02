@@ -1,0 +1,35 @@
+name: Authotizer CI
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: code checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # Configurar Node.js (necessário para semantic-release)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '23' # Ajuste conforme necessário
+
+      # Instalar dependências do Node
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: semantic-release
+        env: 
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx semantic-release --debug
